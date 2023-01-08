@@ -36,6 +36,7 @@ const int TOTAL_SAMPLES = NUM_CAPTURED_SAMPLES_PER_GESTURE * NUM_FEATURES_PER_SA
 const int THRESHOLD_SAMPLE_INDEX =  ((NUM_CAPTURED_SAMPLES_PER_GESTURE / 3) * NUM_FEATURES_PER_SAMPLE); // one-third of data comes before threshold
 
 int capturedSamples = 0;
+int j = 0;
 
 // global variables used for TensorFlow Lite (Micro)
 tflite::MicroErrorReporter tflErrorReporter;
@@ -70,6 +71,7 @@ const char* EMOJIS[] = {
 
 void setup() {
   Serial.begin(9600);
+  
   Serial.print(" QUESTIONS:  ");
   Serial.print("etes-vous étudiant ? \n\n ");
   Serial.print("parlez vous l'anglais ? \n\n");
@@ -84,6 +86,7 @@ void setup() {
   }
 
   // print out the samples rates of the IMUs
+  
   Serial.print("Accelerometer sample rate = ");
   Serial.print(IMU.accelerationSampleRate());
   Serial.println(" Hz");
@@ -93,6 +96,13 @@ void setup() {
 
   Serial.println();
 
+
+  Serial.print(" QUESTIONS:  \n");
+  Serial.print("Etes-vous étudiant ? \n\n ");
+  Serial.print("parlez vous l'anglais ? \n\n");
+  Serial.print("Résidez-vous en France ? \n\n\n ");
+
+  
   // get the TFL representation of the model byte array
   tflModel = tflite::GetModel(model);
   if (tflModel->version() != TFLITE_SCHEMA_VERSION) {
@@ -176,19 +186,22 @@ void loop() {
     while (1);
     return;
   }
-int j = 0;
+
   // Loop through the output tensor values from the model
 
-   Serial.print(" REPONSES:  ");
+
 
   for (int i = 0; i < NUM_GESTURES; i++) {
-     if(tflOutputTensor->data.f[i]&& j<=2){
+     if(tflOutputTensor->data.f[i]&& j < 4){
+        
      if (tflOutputTensor->data.f[i] > 0.7) {
+        Serial.print(" REPONSES:    ");
         Serial.println(EMOJIS[i]);
         Serial.println();
         }
      }
-   j ++;
+     j ++;
   }
+  
   Serial.println();
 }
