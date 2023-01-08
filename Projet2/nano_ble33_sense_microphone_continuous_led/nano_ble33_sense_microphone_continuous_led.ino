@@ -16,7 +16,7 @@
 
 // If your target is limited in memory remove this macro to save 10K RAM
 #define EIDSP_QUANTIZE_FILTERBANK   0
-pinMode (ledpin, OUTPUT);
+
 
 /**
  * Define the number of slices per model window. E.g. a model window of 1000 ms
@@ -43,6 +43,7 @@ pinMode (ledpin, OUTPUT);
 /* Includes ---------------------------------------------------------------- */
 #include <PDM.h>
 #include <Recognition_inferencing.h>
+#define ledpin 2;
 
 /** Audio buffers, pointers and selectors */
 typedef struct {
@@ -69,6 +70,7 @@ void setup()
     // comment out the below line to cancel the wait for USB connection (needed for native USB)
     while (!Serial);
     Serial.println("Edge Impulse Inferencing Demo");
+    pinMode (ledpin, OUTPUT);
 
     // summary of inferencing settings (from model_metadata.h)
     ei_printf("Inferencing settings:\n");
