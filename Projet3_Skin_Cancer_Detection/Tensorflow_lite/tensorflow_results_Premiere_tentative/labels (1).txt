@@ -1,0 +1,3 @@
+None Skin
+Normal_Skin
+Skin Cancer
